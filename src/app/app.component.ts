@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatSidenav } from '@angular/material';
+import { ObservableMedia } from '@angular/flex-layout';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'amplifyMFT';
+  constructor(public media: ObservableMedia) {}
 }

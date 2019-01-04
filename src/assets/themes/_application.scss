@@ -1,0 +1,300 @@
+/*
+*  Global application style
+*/
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: $bodyfont;
+  color: $bodytext;
+  font-weight: 300;
+ }
+
+// == Headings ==
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+
+    font-family: $headingfont;
+    font-weight: 400;
+}
+
+h1 {
+    line-height: 40px;
+    font-size: 36px
+}
+
+h2 {
+    line-height: 36px;
+    font-size: 30px
+}
+
+h3 {
+    line-height: 30px;
+    font-size: 21px
+}
+
+h4 {
+    line-height: 22px;
+    font-size: 18px
+}
+
+h5 {
+    line-height: 18px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+h6 {
+    line-height: 16px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+// == Display
+.dis-flex{
+  display: flex;
+}
+.fl-no-shrink{
+  flex-shrink: 0;
+}
+
+
+// == Margin
+
+html body {
+  .m-0 {
+      margin: 0px;
+  }
+
+  .m-l-5 {
+      margin-left: 5px;
+  }
+
+  .m-l-10 {
+      margin-left: 10px;
+  }
+
+  .m-l-15 {
+      margin-left: 15px;
+  }
+
+  .m-l-20 {
+      margin-left: 20px;
+  }
+
+  .m-l-30 {
+      margin-left: 30px;
+  }
+
+  .m-l-40 {
+      margin-left: 40px;
+  }
+
+  .m-r-5 {
+      margin-right: 5px;
+  }
+
+  .m-r-10 {
+      margin-right: 10px;
+  }
+
+  .m-r-15 {
+      margin-right: 15px;
+  }
+
+  .m-r-20 {
+      margin-right: 20px;
+  }
+
+  .m-r-30 {
+      margin-right: 30px;
+  }
+
+  .m-r-40 {
+      margin-right: 40px;
+  }
+
+  .m-t-0 {
+      margin-top: 0px;
+  }
+
+  .m-t-5 {
+      margin-top: 5px;
+  }
+
+  .m-t-10 {
+      margin-top: 10px;
+  }
+
+  .m-t-15 {
+      margin-top: 15px;
+  }
+
+  .m-t-20 {
+      margin-top: 20px;
+  }
+
+  .m-t-30 {
+      margin-top: 30px;
+  }
+
+  .m-t-40 {
+      margin-top: 40px;
+  }
+
+  .m-b-0 {
+      margin-bottom: 0px;
+  }
+
+  .m-b-5 {
+      margin-bottom: 5px;
+  }
+
+  .m-b-10 {
+      margin-bottom: 10px;
+  }
+
+  .m-b-15 {
+      margin-bottom: 15px;
+  }
+
+  .m-b-20 {
+      margin-bottom: 20px;
+  }
+
+  .m-b-30 {
+      margin-bottom: 30px ;
+  }
+
+  .m-b-40 {
+      margin-bottom: 40px;
+  }
+  }
+
+
+// ==Background Colors
+
+.bg-theme {
+  background-color: $themecolor;
+}
+
+.bg-accent {
+  background-color: $themecolor-accent;
+}
+.bg-warning {
+  background-color: $themecolor-warn;
+}
+.bg-theme-light {
+  background-color: $themecolor-light;
+}
+.bg-theme-dark {
+  background-color: $themecolor-dark;
+}
+.bg-yellow {
+  background-color: $yellowcolor;
+}
+.bg-green {
+  background-color: $greencolor;
+}
+.bg-purple {
+  background-color: $purplecolor;
+}
+.bg-lightblue {
+  background-color: $lightbluecolor;
+}
+
+
+// == Text Colors
+
+.text-white {
+  color: white;
+}
+.text-black {
+  color: $blacktext;
+}
+.text-lightgrey {
+  color: $lightgreytext;
+}
+.text-darkgrey {
+  color: $darkgreytext;
+}
+.text-theme {
+  color: $themecolor;
+}
+.text-accent {
+  color: $themecolor-accent;
+}
+.text-warning {
+  color: $themecolor-warn;
+}
+.text-warning {
+  color: $themecolor-warn;
+}
+.text-yellow {
+  color: $yellowcolor;
+}
+.text-green {
+  color: $greencolor;
+}
+.text-purple {
+  color: $purplecolor;
+}
+.text-lightblue {
+  color: $lightbluecolor;
+}
+
+
+
+// == marging padding
+.margin-top {
+ margin-top: 16px;
+}
+
+.horizontal-padding {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+
+// == application layout
+
+.flex-spacer {
+  flex: 1 1 auto;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.app-is-mobile .app-toolbar {
+  position: fixed;
+  z-index: 2;
+}
+.app-sidenav-container {
+  flex: 1;
+  height:calc(100vh - 64px);
+}
+.app-is-mobile .app-sidenav-container {
+  flex: 1 0 auto;
+}
+mat-sidenav {
+  width: 200px;
+}
+
+
+// == others
+
+.shadow-none {
+  box-shadow: none!important;
+}
+

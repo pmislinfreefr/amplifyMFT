@@ -1,0 +1,83 @@
+/*
+ Management of the menus and sidebar
+*/
+
+// == profile menu ==
+$img-translation: 30px;
+
+.profile-img img {
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+  box-shadow: 0 0 0 10px white;
+  position: relative;
+  top: -1 * $img-translation;
+}
+
+.profile-data {
+  font-size: 15px;
+  color:white;
+  letter-spacing: 1px;
+  margin-bottom: 25px
+}
+
+.profile-header {
+  height: $img-translation;
+}
+
+.profile-menu {
+  //background-color: mat-color($accent);
+  background-image:linear-gradient(mat-color($primary), mat-color($accent));
+  text-align: center;
+}
+
+// == sidnavbar ==
+
+#mySidenav{
+  box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
+  .mat-list-item {
+    height: auto;
+    &:hover{
+        background: none;
+    }
+
+    .mat-list-item-content{
+      display: block;
+      padding: 0px 15px;
+      &:hover{
+          background: $themecolor-light;
+          > a{
+            color:$themecolor;
+          }
+      }
+  }
+    a{
+      height: 45px;
+      padding: 0 10px;
+      margin-bottom: 10px;
+      align-items: center;
+      display: flex;
+      font-size: 15px;
+      white-space: nowrap;
+      color:$sidebar-text;
+
+      mat-icon{
+          color:$sidebar-icons;
+          margin-right: 8px;
+      }
+
+  }
+  &.nav-active-link > .mat-list-item-content > a{
+      background: $themecolor-accent;
+      border-radius: $radius;
+      color:white;
+
+      mat-icon{
+          color:white;
+      }
+
+  }
+
+  }
+}
+

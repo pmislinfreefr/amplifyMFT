@@ -1,0 +1,19 @@
+<button mat-icon-button [matMenuTriggerFor]="profileMenu"><mat-icon>account_circle</mat-icon></button>
+  <mat-menu #profileMenu="matMenu" >
+    <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="10px">
+      <div class="profile-header"></div>
+      <div class="profile-menu">
+        <div fxFlexAlign="center" class="profile-img"> <img src="assets/images/users/d2.jpg" alt="user"> </div>
+        <div fxFlexAlign="center" class="profile-data">Felix the flow manager</div>
+    </div>
+  </div>
+    <button mat-menu-item>
+        <mat-icon>settings</mat-icon> Settings </button>
+    <button mat-menu-item>
+        <mat-icon>account_box</mat-icon> Profile </button>
+    <button mat-menu-item>
+        <mat-icon>notifications_off</mat-icon> Disable notifications </button>
+    <button mat-menu-item>
+        <mat-icon>exit_to_app</mat-icon> Sign Out </button>
+  </mat-menu>
+<button mat-icon-button><mat-icon>lock_open</mat-icon></button>

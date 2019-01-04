@@ -1,3 +1,97 @@
-<p>
-  home works!
-</p>
+<!-- ============================================================== -->
+<!-- stat on applications, ... -->
+<!-- ============================================================== -->
+<div fxLayout="row wrap">
+  <!-- First -->
+  <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
+      <mat-card>
+          <mat-card-content>
+              <!-- Row -->
+              <div class="dis-flex">
+                  <!-- column -->
+                  <div class="m-r-10 fl-no-shrink">
+                      <button mat-fab mat-card-icon class="shadow-none">
+                          <mat-icon>account_circle</mat-icon>
+                      </button>
+                  </div>
+                  <!-- column -->
+                  <div>
+                      <h3 class="m-0">{{myApplicationList.nb_application}}</h3>
+                      <h6 class="text-lightgrey m-0">Applications</h6>
+                  </div>
+
+              </div>
+          </mat-card-content>
+      </mat-card>
+  </div>
+  <!-- second -->
+  <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
+    <mat-card>
+        <mat-card-content>
+            <!-- Row -->
+            <div class="dis-flex">
+                <!-- column -->
+                <div class="m-r-10 fl-no-shrink">
+                    <button mat-fab color="primary" mat-card-icon class="shadow-none">
+                        <mat-icon>local_mall</mat-icon>
+                    </button>
+                </div>
+                <!-- column -->
+                <div>
+                    <h3 class="m-0">2408</h3>
+                    <h6 class="text-lightgrey m-0">All Projects</h6>
+                </div>
+
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+<!-- third column -->
+<div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
+  <mat-card>
+      <mat-card-content>
+          <!-- Row -->
+          <div class="dis-flex">
+              <!-- column -->
+              <div class="m-r-10 fl-no-shrink">
+                  <button mat-fab color="primary" mat-card-icon class="shadow-none">
+                      <mat-icon>stars</mat-icon>
+                  </button>
+              </div>
+              <!-- column -->
+              <div>
+                  <h3 class="m-0">352</h3>
+                  <h6 class="text-lightgrey m-0">New Items</h6>
+              </div>
+
+          </div>
+      </mat-card-content>
+  </mat-card>
+</div>
+<!-- forth column -->
+<div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
+  <mat-card>
+      <mat-card-content>
+          <!-- Row -->
+          <div class="dis-flex">
+              <!-- column -->
+              <div class="m-r-10 fl-no-shrink">
+                  <button mat-fab color="warn" mat-card-icon class="shadow-none">
+                      <mat-icon>content_paste</mat-icon>
+                  </button>
+              </div>
+              <!-- column -->
+              <div>
+                  <h3 class="m-0">159</h3>
+                  <h6 class="text-muted m-0">New Invoices</h6>
+              </div>
+
+          </div>
+      </mat-card-content>
+  </mat-card>
+</div>
+  <!-- Spinner -->
+  <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100" *ngIf="isLoadingData" >
+    <mat-spinner class="loading-data" *ngIf="isLoadingData" ></mat-spinner>
+  </div>
+</div>

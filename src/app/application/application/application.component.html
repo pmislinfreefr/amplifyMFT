@@ -1,0 +1,76 @@
+<!-- Search and table of application -->
+<div class="m-l-20 m-r-20 m-t-20" *ngIf="isListDisplayed">
+  <!-- Search input -->
+<div class="filter-row">
+  <form style="margin-bottom: 32px">
+    <div fxLayout="row">
+      <mat-form-field class="full-width">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" aria-label="Search" [formControl]="search">
+        <mat-hint>Search by application name</mat-hint>
+        <mat-error *ngIf="search.invalid">
+          Type more than one character to search
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<!-- table listing the applications -->
+<div class="mat-elevation-z8">
+  <div class="loading-shade" *ngIf="isLoadingData">
+    <mat-spinner *ngIf="isLoadingData"></mat-spinner>
+    <div class="error" *ngIf="hasError">
+      {{errorText}}
+    </div>
+  </div>
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="appli_name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.appli_name}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="appli_host">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> host </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.appli_host}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="appli_product_name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Product </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.appli_product_name}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="appli_product_type">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Product type </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.appli_product_type}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef fxLayoutAlign="end center">View Details</mat-header-cell>
+      <mat-cell *matCellDef="let row" fxLayoutAlign="end center" style="margin-right: 8px">
+        <a mat-button mat-icon-button (click)="displayApplication(row)" >
+          <mat-icon>visibility</mat-icon>
+        </a>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+</div>
+</div>
+<!-- Display of an application -->
+<div fxLayout="row wrap" class="m-l-20 m-r-20 m-t-20" *ngIf="isListDisplayed === false">
+    <div fxFlex.gt-sm="100%" fxFlex="100">
+        <mat-card>
+            <mat-card-header class="bg-accent text-white">
+                <mat-card-title>Detail of application: {{SelectedApplication.appli_name}}</mat-card-title>
+                <mat-card-subtitle>This is the subtitle</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                    commodo consequat. </p>
+                    <mat-card-actions>
+                        <button mat-raised-button color="accent" (click)="closeApplicationDisplay()">Close</button>
+                    </mat-card-actions>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+

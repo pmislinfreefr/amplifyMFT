@@ -1,0 +1,47 @@
+/*
+ Customized Angular material theme and variables
+*/
+
+// == Material custom Them ==
+@import '~@angular/material/theming';
+$primary: mat-palette($mat-blue, 600);
+$accent: mat-palette($mat-indigo, 500);
+$warn: mat-palette($mat-pink, 500);
+$theme: mat-light-theme($primary, $accent, $warn);
+$background: map-get($theme, background);
+$foreground: map-get($theme, foreground);
+
+@include mat-core();
+@include angular-material-theme($theme);
+
+// == fonts
+$bodyfont: Roboto, "Helvetica Neue", sans-serif;
+$headingfont: Roboto, "Helvetica Neue", sans-serif;
+
+// == Theme color ==
+$bodycolor: #eef5f9;
+$headingtext: #455a64;
+$bodytext: #647177;
+$sidebar-text: #607d8b;
+$sidebar-icons: #99abb4;
+$blacktext: black;
+$lightgreytext: rgb(172, 169, 169);
+$darkgreytext: rgb(80, 78, 78);
+
+$font-16: 16px;
+
+$light-text: #a6b7bf;
+$themecolor: mat-color($primary);
+$themecolor-accent: mat-color($accent);
+$themecolor-warn: mat-color($warn);
+$themecolor-light: mat-color($primary,lighter,0.5);
+$themecolor-dark:mat-color($primary,darker,0.5);
+$themecolor-accent-dark:mat-color($accent,darker,0.5);
+$yellowcolor: yellow;
+$greencolor: green;
+$purplecolor: purple;
+$lightbluecolor: rgb(0, 225, 255);
+
+
+$radius: 4px;
+

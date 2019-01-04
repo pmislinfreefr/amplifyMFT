@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ApplicationService } from '../services/application.service';
+import { IApplication, IApplicationsList } from '../services/interface_application';
+import { UiService } from '../common/uiservice';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -6,7 +10,35 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  constructor() {}
+  myApplicationList: IApplicationsList;
+  isLoadingData = true;
 
-  ngOnInit() {}
+  constructor(
+    private applicationService: ApplicationService,
+    public uiservice: UiService
+  ) {}
+
+  ngOnInit() {
+    if (this.applicationService.getIsLoaded() === false) {
+      this.applicationService.getcurrentApplicationsList().subscribe(
+        data => {
+          this.applicationService.currentApplicationsList.next(data);
+          this.isLoadingData = false;
+        },
+        err => {
+          this.uiservice.showMsg(
+            `An error occured when trying to call Application API : ${err}`,
+            'Close',
+            'error'
+          );
+          this.isLoadingData = false;
+        }
+      );
+    } else {
+      this.isLoadingData = false;
+    }
+    this.applicationService.currentApplicationsList.subscribe(
+      data => (this.myApplicationList = data)
+    );
+  }
 }
