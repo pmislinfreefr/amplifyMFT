@@ -86,3 +86,17 @@ Style for the components
   }
  }
 
+ // == forms
+ // ==== Form in view only mode
+ .form-view  .mat-form-field-label {
+    color: $themecolor-accent !important;
+ }
+ .form-view  .mat-input-element {
+  color: $bodytext !important;
+}
+ .form-view .mat-form-field-underline {
+    background-color: transparent  !important;
+    border: none !important;
+}
+// ==== Form in edit mode (class form-edit)
+// not yet any instruction, using Angular material default

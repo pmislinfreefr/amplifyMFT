@@ -48,7 +48,7 @@ export class ApplicationService {
   currentApplicationsList = new BehaviorSubject<IApplicationsList>({
     nb_application: 0,
     date_fetch: 0,
-    applications: null,
+    applications: [],
   });
   private isLoaded = false;
 

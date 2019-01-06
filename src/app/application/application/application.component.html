@@ -17,9 +17,9 @@
 </div>
 <!-- table listing the applications -->
 <div class="mat-elevation-z8">
-  <div class="loading-shade" *ngIf="isLoadingData">
+  <div class="loading-shade" >
     <mat-spinner *ngIf="isLoadingData"></mat-spinner>
-    <div class="error" *ngIf="hasError">
+    <div class="bg-warning text-white" *ngIf="hasError">
       {{errorText}}
     </div>
   </div>
@@ -60,14 +60,84 @@
         <mat-card>
             <mat-card-header class="bg-accent text-white">
                 <mat-card-title>Detail of application: {{SelectedApplication.appli_name}}</mat-card-title>
-                <mat-card-subtitle>This is the subtitle</mat-card-subtitle>
+                <mat-card-subtitle>only view is available</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                    commodo consequat. </p>
+                <form [formGroup]="appliForm">
+                    <div fxLayout="row wrap" fxFlexAlign="center" class="{{formCssClass}}">
+                        <div fxFlex.gt-sm="50" fxFlex="100" class="p-10">
+                            <!-- Field 1 -->
+                            <mat-form-field >
+                              <input matInput placeholder="Application Name" aria-label="Application Name" formControlName="appli_name">
+                              <mat-error *ngIf="appliForm.get('appli_name').hasError('required')">
+                                Application Name is required
+                              </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!-- Field 2 -->
+                        <div fxFlex.gt-sm="50" fxFlex="100" class="p-10">
+                          <mat-form-field >
+                            <input matInput placeholder="Internal identifier (Businness Id)" aria-label="Internal identifier" formControlName="appli_bId">
+                            <mat-error *ngIf="appliForm.get('appli_bId').hasError('required')">
+                              Internal Identifier is required
+                            </mat-error>
+                          </mat-form-field>
+                      </div>
+                      <!-- Field 3 -->
+                      <div fxFlex.gt-sm="100" fxFlex="100" class="p-10">
+                          <mat-form-field >
+                            <input matInput placeholder="Description" aria-label="Description" formControlName="appli_description">
+                          </mat-form-field>
+                      </div>
+                      <!-- Field 4 -->
+                      <div fxFlex.gt-sm="50" fxFlex="100" class="p-10">
+                          <mat-form-field >
+                            <input matInput placeholder="Hostname" aria-label="hostname" formControlName="appli_host">
+                            <mat-error *ngIf="appliForm.get('appli_host').hasError('required')">
+                              hostname is required
+                            </mat-error>
+                          </mat-form-field>
+                      </div>
+                      <!-- Field 5 -->
+                      <div fxFlex.gt-sm="50" fxFlex="100" class="p-10">
+                          <mat-form-field >
+                            <input matInput placeholder="Associated product" aria-label="Associated product" formControlName="appli_product_name">
+                            <mat-error *ngIf="appliForm.get('appli_product_name').hasError('required')">
+                              The associated product is required
+                            </mat-error>
+                          </mat-form-field>
+                      </div>
+                      <!-- Field 6 -->
+                      <div fxFlex.gt-sm="50" fxFlex="100" class="p-10">
+                          <mat-form-field >
+                            <input matInput placeholder="Product internal identifier" aria-label="Product internal identifier" formControlName="appli_product_bId">
+                            <mat-error *ngIf="appliForm.get('appli_product_bId').hasError('required')">
+                              The associated product is required
+                            </mat-error>
+                          </mat-form-field>
+                      </div>
+                      <!-- Field 7 -->
+                      <div fxFlex.gt-sm="50" fxFlex="100" class="p-10">
+                          <mat-form-field >
+                            <input matInput placeholder="Product type" aria-label="Product type" formControlName="appli_product_type">
+                            <mat-error *ngIf="appliForm.get('appli_product_type').hasError('required')">
+                              The associated product is required
+                            </mat-error>
+                          </mat-form-field>
+                      </div>
+                      <!-- Field 8 -->
+                      <div fxFlex.gt-sm="100" fxFlex="100" class="p-10">
+                          <mat-form-field >
+                            <input matInput placeholder="Application group" aria-label="Application group" formControlName="appli_group">
+                          </mat-form-field>
+                      </div>
+                    </div>
+                </form>
                     <mat-card-actions>
                         <button mat-raised-button color="accent" (click)="closeApplicationDisplay()">Close</button>
+                    </mat-card-actions>
+                    <mat-card-actions>
+                        <button mat-raised-button color="accent" (click)="activateEdit()">Edit</button>
                     </mat-card-actions>
             </mat-card-content>
         </mat-card>
