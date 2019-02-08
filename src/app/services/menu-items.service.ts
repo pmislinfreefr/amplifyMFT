@@ -14,7 +14,6 @@ const MENUITEMS = [
   { name: 'List the flows', icon: 'view_list', link: 'flowList' },
   { name: 'Manage applications', icon: 'perm_data_setting', link: 'applicationList' },
   { name: 'Manage partners', icon: 'view_headline', link: 'partnerList' },
-  { name: 'No icon', link: 'partnerList' },
 ];
 
 @Injectable({

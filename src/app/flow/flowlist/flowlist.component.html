@@ -1,0 +1,225 @@
+<!-- Search and table of flow -->
+<div class="m-l-20 m-r-20 m-t-20" *ngIf="isListDisplayed">
+  <!-- Search input -->
+<div class="filter-row">
+  <form style="margin-bottom: 32px">
+    <div fxLayout="row">
+      <mat-form-field class="full-width">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" aria-label="Search" [formControl]="search">
+        <mat-hint>Search by flow name</mat-hint>
+        <mat-error *ngIf="search.invalid">
+          Type more than one character to search
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<!-- table listing the flow -->
+<div class="mat-elevation-z8">
+  <div class="loading-shade" >
+    <mat-spinner *ngIf="isLoadingData"></mat-spinner>
+    <div class="bg-warning text-white" *ngIf="hasError">
+      {{errorText}}
+    </div>
+  </div>
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="flow_name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.flow_name}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="flow_modelName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> flow model </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.flow_modelName}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="source">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Source </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{fromBid2Name(row.source_application_id)}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="target">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Target </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{fromBid2Name(row.target_application_id)}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef fxLayoutAlign="end center">View Details</mat-header-cell>
+      <mat-cell *matCellDef="let row" fxLayoutAlign="end center" style="margin-right: 8px">
+        <a mat-button mat-icon-button (click)="displayFlow(row)" >
+          <mat-icon>visibility</mat-icon>
+        </a>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+</div>
+</div>
+<!-- Display of a flow -->
+<div fxLayout="row wrap" class="m-l-20 m-r-20 m-t-20" *ngIf="isListDisplayed === false">
+  <div fxFlex.gt-sm="100%" fxFlex="100">
+      <mat-card>
+          <mat-card-header class="bg-accent text-white">
+              <mat-card-title>Detail of application: {{SelectedFlow.flow_name}}</mat-card-title>
+              <mat-card-subtitle>Click Edit to update this flow</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+<!-- Form displayed if flow model selected -->
+<form [formGroup]="flowForm" >
+    <!-- Section 1 - General info -->
+    <h6>General information on the flow</h6>
+    <div fxLayout="row wrap" fxFlexAlign="center" class="m-l-40" >
+          <!-- Field 1 -->
+          <div fxFlex.gt-sm="33" fxFlex="100" class="p-0">
+              <mat-form-field class="f-f-large" [hideRequiredMarker]="hideRequiredMarker">
+                <input matInput placeholder="Flow Name" aria-label="Flow Name" formControlName="flow_name" required>
+                <mat-error *ngIf="flowForm.get('flow_name').hasError('required')">
+                  Flow Name is required
+                </mat-error>
+              </mat-form-field>
+          </div>
+          <!-- Field 2 -->
+          <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.isflow_description">
+              <mat-form-field class="f-f-large">
+                <input matInput placeholder="Flow Description" aria-label="Flow Description" formControlName="flow_description">
+
+              </mat-form-field>
+          </div>
+          <!-- Field 3 -->
+          <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.isprotocol_pesit_flow_idf">
+            <mat-form-field class="f-f-large">
+              <input matInput placeholder="Flow identifier" aria-label="Flow identifier" formControlName="protocol_pesit_flow_idf" required>
+              <mat-error *ngIf="flowForm.get('protocol_pesit_flow_idf').hasError('required')">
+                Flow identifier is required
+              </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- Section 2 - Contact info -->
+    <h6>Contact information</h6>
+    <div fxLayout="row wrap" fxFlexAlign="center" class="m-l-40" >
+          <!-- Field 1 -->
+          <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.iscontact_firstname">
+              <mat-form-field class="f-f-large">
+                <input matInput placeholder="First name" aria-label="First name" formControlName="contact_firstname">
+
+              </mat-form-field>
+          </div>
+          <!-- Field 2 -->
+          <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.iscontact_lastname">
+              <mat-form-field class="f-f-large">
+                <input matInput placeholder="Last name" aria-label="Last name" formControlName="contact_lastname">
+
+              </mat-form-field>
+          </div>
+          <!-- Field 3 -->
+          <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.iscontact_email">
+              <mat-form-field class="f-f-large">
+                <input matInput placeholder="email" aria-label="email" formControlName="contact_email">
+
+              </mat-form-field>
+          </div>
+          <!-- Field 4 -->
+          <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.iscontact_phone">
+              <mat-form-field class="f-f-large">
+                <input matInput placeholder="Phone" aria-label="Phone" formControlName="contact_phone">
+
+              </mat-form-field>
+          </div>
+          <!-- Field 5 -->
+          <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.iscontact_jobtitle">
+                  <mat-form-field class="f-f-large">
+                <input matInput placeholder="Job title" aria-label="Job title" formControlName="contact_jobtitle">
+
+              </mat-form-field>
+          </div>
+    </div>
+          <!-- Section 3 - Source info -->
+          <h6>Source information</h6>
+          <div fxLayout="row wrap" fxFlexAlign="center" class="m-l-40" >
+              <!-- Field 1 -->
+              <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.issource_application_id">
+                <mat-form-field class="f-f-large">
+                    <mat-select placeholder="Application" formControlName="_selectedSourceApplication" (selectionChange)="newSappliSelected($event.value)" required>
+                      <mat-option *ngFor="let sappli of myApplicationList.applications" [value]="sappli">
+                        {{sappli.appli_name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="flowForm.get('_selectedSourceApplication').hasError('required')">
+                      Source application is required
+                    </mat-error>
+                  </mat-form-field>
+              </div>
+                <!-- Field 2 -->
+                <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.issource_prop_file_file_type">
+                    <mat-form-field class="f-f-large">
+                      <mat-select placeholder="File type" formControlName="source_prop_file_file_type" >
+                        <mat-option *ngFor="let typesf of FILETYPE_LST" [value]="typesf.value">
+                          {{typesf.value}}
+                        </mat-option>
+                      </mat-select>
+
+                    </mat-form-field>
+                </div>
+                <!-- Field 3 -->
+                <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.issource_prop_transfer_action_after_transfer">
+                  <mat-form-field class="f-f-large">
+                    <mat-select placeholder="Action on file after transfer" formControlName="source_prop_transfer_action_after_transfer" >
+                      <mat-option *ngFor="let typeas of ACTIONAT_LST" [value]="typeas.value">
+                        {{typeas.value}}
+                      </mat-option>
+                    </mat-select>
+
+                  </mat-form-field>
+              </div>
+          </div>
+          <!-- Section 4 - Target info -->
+          <h6>Target information</h6>
+          <div fxLayout="row wrap" fxFlexAlign="center" class="m-l-40" >
+              <!-- Field 1 -->
+              <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.istarget_application_id">
+                <mat-form-field class="f-f-large">
+                    <mat-select placeholder="Application" formControlName="_selectedTargetApplication" (selectionChange)="newTappliSelected($event.value)" required>
+                      <mat-option *ngFor="let tappli of myApplicationList.applications" [value]="tappli">
+                        {{tappli.appli_name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="flowForm.get('_selectedTargetApplication').hasError('required')">
+                      Target application is required
+                    </mat-error>
+                  </mat-form-field>
+              </div>
+                <!-- Field 2 -->
+                <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.istarget_prop_file_file_type">
+                    <mat-form-field class="f-f-large">
+                      <mat-select placeholder="File type" formControlName="target_prop_file_file_type" >
+                        <mat-option *ngFor="let typetf of FILETYPE_LST" [value]="typetf.value">
+                          {{typetf.value}}
+                        </mat-option>
+                      </mat-select>
+
+                    </mat-form-field>
+                </div>
+
+
+                <!-- Field 3 -->
+                <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.istarget_prop_file_target_file_name">
+                  <mat-form-field class="f-f-large">
+                    <input matInput placeholder="Path and file name" aria-label="Path and file name" formControlName="target_prop_file_target_file_name">
+
+                  </mat-form-field>
+              </div>
+            </div>
+
+
+      </form>
+
+              <mat-card-actions>
+                  <button mat-raised-button color="accent" (click)="closeFlowDisplay()">Close</button>
+
+                  <button mat-raised-button color="accent" (click)="activateEdit()" *ngIf="canModifyForm === false">Edit</button>
+                  <button mat-raised-button color="accent" (click)="updateFlow(flowForm.value)" *ngIf="canModifyForm === true">Update</button>
+              </mat-card-actions>
+      </mat-card-content>
+  </mat-card>
+</div>
+</div>

@@ -16,6 +16,9 @@ import { ApplicationService } from './services/application.service';
 import { UiService } from './common/uiservice';
 import { ApplicationComponent } from './application/application/application.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FlowService } from './services/flow/flow.service';
+import { FlowlistComponent } from './flow/flowlist/flowlist.component';
+import { FlowcreateComponent } from './flow/flowcreate/flowcreate.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +28,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HeaderComponent,
     SidnavbarComponent,
     ApplicationComponent,
+    FlowlistComponent,
+    FlowcreateComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +41,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [MenuItemsService, ApplicationService, UiService],
+  providers: [MenuItemsService, ApplicationService, UiService, FlowService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

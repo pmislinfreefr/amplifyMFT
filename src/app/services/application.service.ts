@@ -11,15 +11,18 @@
  *          2)Create a local property which will store the list ( myApplicationList: IApplicationsList )
  *          3)In the ngOnInit() method call
  *            this.applicationService.currentApplicationsList.subscribe(data => (this.myApplicationList = data));
- *        HOW TO REFRESH THE LIST FROM THE SERVER
+ *        HOW TO REFRESH/Load THE LIST FROM THE SERVER
  *          1)Add ApplicationService in the constructor of the component to inject the service
- *          2)call this.applicationService
-                .getcurrentApplicationsList(false)
+ *          2a) Method a - provide more control in the component (to manage for exemple a load spinner
+ *              call this.applicationService
+                .getcurrentApplicationsList()
                 .subscribe(
                 data => this.applicationService.currentApplicationsList.next(data),
                 err => {
                     console.log('ERRINHOME:', err);  // or any error management
                 });
+              2b) Method b - more easy but less control in the compnent
+                call this.applicationService.loadApplicationList()
  */
 
 import { Injectable } from '@angular/core';
@@ -39,6 +42,7 @@ import {
 } from './interface_application';
 // import { forEach } from '@angular/router/src/utils/collection';
 import { ManageError } from '../common/common';
+import { UiService } from '../common/uiservice';
 declare var require: any; // needed to use require() in TypeScript (or install typescript for nodejs functions)
 
 @Injectable({
@@ -52,8 +56,42 @@ export class ApplicationService {
   });
   private isLoaded = false;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, public uiservice: UiService) {}
 
+  // ==
+  // Desc - Allow to load the application list and push the result in the observable currentApplicationsList
+  // Params
+  //  isForced: true if you want to force the fetch of data from server even if a previous attempt already loaded the data
+  //  isFake: true if you want to get data from fake local json (for testing purpose)
+  // ==
+  loadApplicationList(
+    isForced: boolean = false,
+    isFake: boolean = environment.fakeLoadOfData
+  ) {
+    if (this.isLoaded === false || isForced === true) {
+      this.getcurrentApplicationsList(isFake).subscribe(
+        data => {
+          this.currentApplicationsList.next(data);
+        },
+        err => {
+          this.uiservice.showMsg(
+            `An error occured when trying to call Application API : ${err}`,
+            'Close',
+            'error'
+          );
+        }
+      );
+    }
+  }
+
+  // ==
+  // Desc - Allow to load the application list from the server and return an observable of IApplicationsList
+  //        When this method is called, it is advised, in the subscription to
+  //        run "data => this.applicationService.currentApplicationsList.next(data)" (to push the result)
+  //        Use this method if you need more control in your component, otherwise call loadApplicationList()
+  // Params
+  //   isFake: true if you want to get data from fake local json (for testing purpose)
+  // ==
   getcurrentApplicationsList(
     isFake: boolean = environment.fakeLoadOfData
   ): Observable<IApplicationsList> {
@@ -64,9 +102,14 @@ export class ApplicationService {
     }
   }
 
+  // ==
+  // Desc - get value of attribut isLoaded
+  //
   getIsLoaded(): boolean {
     return this.isLoaded;
   }
+
+  // =================== Private method below =========================
 
   private fetchApplicationListFromAPI_FAKE(): Observable<IApplicationsList> {
     const fakeData: IAPIApplicationData = require('./FakeResponseListApp.json');

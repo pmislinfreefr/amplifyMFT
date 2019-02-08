@@ -33,7 +33,7 @@ export class ApplicationComponent implements OnInit, AfterViewInit {
     'id',
   ];
   dataSource = new MatTableDataSource(); // dataSource for the display of the table
-  isLoadingData = true; // allow to display a spinner during the load of data
+  isLoadingData = false; // allow to display a spinner during the load of data (not managed in this component)
   hasError = false; // identify if there was an error during the load of data (HTTP REST Call)
   errorText = '';
   isListDisplayed = true; // allow to switch between the view of the list to the view of the detail of one element
@@ -84,7 +84,7 @@ export class ApplicationComponent implements OnInit, AfterViewInit {
 
   // load the data and subscibe to any data update
   ngOnInit() {
-    
+    /*
     if (this.applicationService.getIsLoaded() === false) {
       this.applicationService.getcurrentApplicationsList().subscribe(
         data => {
@@ -105,10 +105,11 @@ export class ApplicationComponent implements OnInit, AfterViewInit {
     } else {
       this.isLoadingData = false;
     }
-
+*/
     this.applicationService.currentApplicationsList.subscribe(
       data => (this.dataSource.data = data.applications)
     );
+    this.applicationService.loadApplicationList();
   }
 
   // == link the sort capability to the table datasource
@@ -135,7 +136,7 @@ export class ApplicationComponent implements OnInit, AfterViewInit {
       ],
       appli_description: [
         {
-          value: (appli.appli_description) || '',
+          value: appli.appli_description || '',
           disabled: !this.canModifyForm,
         },
       ],

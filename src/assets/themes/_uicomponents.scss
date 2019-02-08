@@ -55,38 +55,42 @@ Style for the components
 // -- SnackBar
 .snack-error {
 
-  background-color: $themecolor-warn;
+  background-color: $color-msg-danger-light;
   max-width: 80vw!important;
   width: 70vw!important;
   .mat-simple-snackbar {
-    color: $bodycolor;
+    color: $color-msg-danger-dark;
   }
   .mat-simple-snackbar-action > button{
-    color: $bodycolor;
-    background-color: $darkgreytext;
+    color: $color-msg-danger-light;
+    background-color: $color-msg-danger-dark;
     &:hover {
-      background-color: black;
+      background-color: $color-msg-danger;
     }
   }
  }
  .snack-info {
 
-  background-color: $themecolor;
+  background-color: $color-msg-info-light;
   max-width: 80vw!important;
   width: 70vw!important;
   .mat-simple-snackbar {
-    color: $bodycolor;
+    color: $color-msg-info-dark;
   }
   .mat-simple-snackbar-action > button{
-    color: $bodycolor;
-    background-color: $themecolor-accent;
+    color: $color-msg-info-light;
+    background-color: $color-msg-info-dark;
     &:hover {
-      background-color: $themecolor-accent-dark;
+      background-color: $color-msg-info;
     }
   }
  }
 
  // == forms
+ //== add this class to <mat-form-field> to have a large field
+ .f-f-large   {
+   width: 70%
+ }
  // ==== Form in view only mode
  .form-view  .mat-form-field-label {
     color: $themecolor-accent !important;
@@ -100,3 +104,13 @@ Style for the components
 }
 // ==== Form in edit mode (class form-edit)
 // not yet any instruction, using Angular material default
+
+// === Style to display info
+.info-disp {
+  background-color: $color-msg-info-light;
+  max-width: 80%!important;
+  width: 60%!important;
+  color: $color-msg-info-dark;
+  padding: 20px
+
+}
