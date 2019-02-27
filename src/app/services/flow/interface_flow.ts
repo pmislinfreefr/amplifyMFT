@@ -31,6 +31,7 @@ export interface IFlowsList {
 // == Description of the API response data
 export interface IAPIFlowData {
   status: number;
+  message?: string;
   data: [
     {
       flows: {
@@ -40,7 +41,7 @@ export interface IAPIFlowData {
           firstName?: string;
           lastName?: string;
           phone?: string;
-        }
+        };
         description: string; // description of the flow
         name: string; // flow name
       };

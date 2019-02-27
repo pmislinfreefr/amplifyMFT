@@ -19,6 +19,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlowService } from './services/flow/flow.service';
 import { FlowlistComponent } from './flow/flowlist/flowlist.component';
 import { FlowcreateComponent } from './flow/flowcreate/flowcreate.component';
+import { PartnerlistComponent } from './partner/partnerlist/partnerlist.component';
+import { PartnerService } from './services/partner/partner.service';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { FlowcreateComponent } from './flow/flowcreate/flowcreate.component';
     ApplicationComponent,
     FlowlistComponent,
     FlowcreateComponent,
+    PartnerlistComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +44,13 @@ import { FlowcreateComponent } from './flow/flowcreate/flowcreate.component';
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [MenuItemsService, ApplicationService, UiService, FlowService],
+  providers: [
+    MenuItemsService,
+    ApplicationService,
+    UiService,
+    FlowService,
+    PartnerService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

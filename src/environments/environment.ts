@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://localhost:6085/api/',
-  fakeLoadOfData: true, // true=Load fake static data, false=Call REST API to fetch the data
+  baseUrl: 'https://api-env.demo.axway.com:8065/DigitalMFT/v3/',
+  fakeLoadOfData: false, // true=Load fake static data, false=Call REST API to fetch the data
 };
 
 /*

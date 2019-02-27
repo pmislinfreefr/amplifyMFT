@@ -1,0 +1,49 @@
+<!-- Search and table of partner -->
+<div class="m-l-20 m-r-20 m-t-20" *ngIf="isListDisplayed">
+  <!-- Search input -->
+<div class="filter-row">
+  <form style="margin-bottom: 32px">
+    <div fxLayout="row">
+      <mat-form-field class="full-width">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" aria-label="Search" [formControl]="search">
+        <mat-hint>Search by partner name</mat-hint>
+        <mat-error *ngIf="search.invalid">
+          Type more than one character to search
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<!-- table listing the partner -->
+<div class="mat-elevation-z8">
+  <div class="loading-shade" >
+    <mat-spinner *ngIf="isLoadingData"></mat-spinner>
+    <div class="bg-warning text-white" *ngIf="hasError">
+      {{errorText}}
+    </div>
+  </div>
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="part_name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.part_name}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="part_comm">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Comm Profiles </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{listCommProf(row)}} </mat-cell>
+    </ng-container>
+    
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef fxLayoutAlign="end center">View Details</mat-header-cell>
+      <mat-cell *matCellDef="let row" fxLayoutAlign="end center" style="margin-right: 8px">
+        <a mat-button mat-icon-button (click)="displayApplication(row)" >
+          <mat-icon>visibility</mat-icon>
+        </a>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+</div>
+</div>

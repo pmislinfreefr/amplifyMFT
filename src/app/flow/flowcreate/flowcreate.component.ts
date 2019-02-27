@@ -25,8 +25,13 @@ import { ApplicationService } from '../../services/application.service';
   styleUrls: ['./flowcreate.component.scss'],
 })
 export class FlowcreateComponent implements OnInit {
-  FILETYPE_LST = [ {value: 'auto'}, {value: 'Binary'}, {value: 'Text'}, {value: 'STREAM_TEXT'}];
-  ACTIONAT_LST = [ {value: 'NONE'}, {value: 'ERASE'}, {value: 'DELETE'}];
+  FILETYPE_LST = [
+    { value: 'auto' },
+    { value: 'Binary' },
+    { value: 'Text' },
+    { value: 'STREAM_TEXT' },
+  ];
+  ACTIONAT_LST = [{ value: 'NONE' }, { value: 'ERASE' }, { value: 'DELETE' }];
   hideRequiredMarker = false;
   existingFlowModel: IFlowModel[] = this.flowService.getModelList();
   myApplicationList: IApplicationsList; // Store the list of application
@@ -59,12 +64,16 @@ export class FlowcreateComponent implements OnInit {
   // == Manage what to do when the user select a source application
   newSappliSelected(valueSelected: IApplication) {
     this.flowForm.get('source_application_id').setValue(valueSelected.appli_bId);
-    this.flowForm.get('source_application_product_id').setValue(valueSelected.appli_product_bId);
+    this.flowForm
+      .get('source_application_product_id')
+      .setValue(valueSelected.appli_product_bId);
   }
   // == Manage what to do when the user select a taregt application
   newTappliSelected(valueSelected: IApplication) {
     this.flowForm.get('target_application_id').setValue(valueSelected.appli_bId);
-    this.flowForm.get('target_application_product_id').setValue(valueSelected.appli_product_bId);
+    this.flowForm
+      .get('target_application_product_id')
+      .setValue(valueSelected.appli_product_bId);
   }
 
   // == Cancel the form
@@ -72,14 +81,60 @@ export class FlowcreateComponent implements OnInit {
     this.isFormReady = false;
     this.selectedModel = null;
   }
-  submitFlowCreation() {
+  async submitFlowCreation() {
+    let flowToCreate: IFlow;
     if (this.selectedModel.istarget_prop_file_target_file_name) {
-       this.flowForm.get('target_prop_file_target_file_name').setValue(
-        this.flowForm.get('_target_cftdir').value + '/' +
-        ((this.flowForm.get('_target_cftfile').value) ? this.flowForm.get('_target_cftfile').value : '.&FROOT') +
-        ((this.flowForm.get('_target_cftunique').value) ? '.&IDTU' : this.flowForm.get('_target_cftunique').value ));
+      this.flowForm
+        .get('target_prop_file_target_file_name')
+        .setValue(
+          this.flowForm.get('_target_cftdir').value +
+            '/' +
+            (this.flowForm.get('_target_cftfile').value
+              ? this.flowForm.get('_target_cftfile').value
+              : '.&FROOT') +
+            (this.flowForm.get('_target_cftunique').value
+              ? '.&IDTU'
+              : this.flowForm.get('_target_cftunique').value)
+        );
     }
-    console.log(this.flowForm.value);
+    flowToCreate = Object.keys(this.flowForm.value).reduce(
+      (obj, key) => {
+        key.charAt(0) !== '_' ? (obj[key] = this.flowForm.value[key]) : null;
+        return obj;
+      },
+      { flow_name: '' }
+    );
+    //console.log(flowToCreate);
+    this.flowService.createFlow(flowToCreate).subscribe(
+      res => {
+        if (res.status == 201) {
+          this.uiservice.showMsg(
+            `The flow "${flowToCreate.flow_name}" has been create successfully`,
+            'Close',
+            'info'
+          );
+          this.isFormReady = false;
+          this.selectedModel = null;
+        } else {
+          this.uiservice.showMsg(
+            `The flow creation of "${flowToCreate.flow_name}" has failed. status=${
+              res.status
+            }, message=${res.message}`,
+            'Close',
+            'error'
+          );
+        }
+
+        //console.log(res);
+      },
+      err => {
+        this.uiservice.showMsg(
+          `An error occured when trying to create the flow : ${err}`,
+          'Close',
+          'error'
+        );
+      }
+    );
   }
 
   // build the application form
@@ -109,7 +164,7 @@ export class FlowcreateComponent implements OnInit {
           value: (flowInstance && flowInstance.protocol_pesit_flow_idf) || '',
           disabled: !this.selectedModel.isprotocol_pesit_flow_idf,
         },
-        (this.selectedModel.isprotocol_pesit_flow_idf) ? Validators.required : null,
+        this.selectedModel.isprotocol_pesit_flow_idf ? Validators.required : null,
       ],
       contact_firstname: [
         {
@@ -146,7 +201,7 @@ export class FlowcreateComponent implements OnInit {
           value: '',
           disabled: !this.selectedModel.issource_application_id,
         },
-        (this.selectedModel.issource_application_id) ? Validators.required : null,
+        this.selectedModel.issource_application_id ? Validators.required : null,
       ],
       source_application_id: [
         {
@@ -168,7 +223,9 @@ export class FlowcreateComponent implements OnInit {
       ],
       source_prop_transfer_action_after_transfer: [
         {
-          value: (flowInstance && flowInstance.source_prop_transfer_action_after_transfer) || 'DELETE',
+          value:
+            (flowInstance && flowInstance.source_prop_transfer_action_after_transfer) ||
+            'DELETE',
           disabled: !this.selectedModel.issource_prop_transfer_action_after_transfer,
         },
       ],
@@ -177,7 +234,7 @@ export class FlowcreateComponent implements OnInit {
           value: '',
           disabled: !this.selectedModel.istarget_application_id,
         },
-        (this.selectedModel.istarget_application_id) ? Validators.required : null,
+        this.selectedModel.istarget_application_id ? Validators.required : null,
       ],
       target_application_id: [
         {
