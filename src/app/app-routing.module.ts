@@ -5,7 +5,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { ApplicationComponent } from './application/application/application.component';
 import { FlowcreateComponent } from './flow/flowcreate/flowcreate.component';
 import { FlowlistComponent } from './flow/flowlist/flowlist.component';
-import {PartnerlistComponent} from './partner/partnerlist/partnerlist.component';
+import { PartnerlistComponent } from './partner/partnerlist/partnerlist.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },

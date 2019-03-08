@@ -18,6 +18,8 @@ import { FlowService } from '../../services/flow/flow.service';
 import { IFlowModel, IFlow } from '../../services/flow/interface_flow';
 import { IApplication, IApplicationsList } from '../../services/interface_application';
 import { ApplicationService } from '../../services/application.service';
+import { PartnerService } from '../../services/partner/partner.service';
+import { IPartnersList, IPartner } from '../../services/partner/interface_partner';
 
 @Component({
   selector: 'app-flowcreate',
@@ -31,16 +33,19 @@ export class FlowcreateComponent implements OnInit {
     { value: 'Text' },
     { value: 'STREAM_TEXT' },
   ];
+  FILEMODE_LST = [{ value: 'AUTODETECT' }, { value: 'BINARY' }, { value: 'ASCII' }];
   ACTIONAT_LST = [{ value: 'NONE' }, { value: 'ERASE' }, { value: 'DELETE' }];
   hideRequiredMarker = false;
   existingFlowModel: IFlowModel[] = this.flowService.getModelList();
   myApplicationList: IApplicationsList; // Store the list of application
+  myPartnerList: IPartnersList;
   selectedModel: IFlowModel;
   selectedSourceApplication: IApplication;
   flowForm: FormGroup; // Form used to create the flow
   isFormReady = false;
   constructor(
     private applicationService: ApplicationService,
+    private partnerService: PartnerService,
     private flowService: FlowService,
     private formBuilder: FormBuilder,
     public uiservice: UiService
@@ -53,6 +58,12 @@ export class FlowcreateComponent implements OnInit {
       data => (this.myApplicationList = data)
     );
     this.applicationService.loadApplicationList();
+    // subscribe to partner provider to get the latest partner list &
+    // request load of the list from server if not yet in memory
+    this.partnerService.currentPartnersList.subscribe(
+      data => (this.myPartnerList = data)
+    );
+    this.partnerService.loadPartnerList();
   }
 
   // == Manage what to do when the user select a new model
@@ -61,6 +72,12 @@ export class FlowcreateComponent implements OnInit {
       this.buildFlowForm();
     }
   }
+
+  // == Manage what to do when the user select a source application
+  newSpartSelected(valueSelected: IPartner) {
+    this.flowForm.get('source_partner_id').setValue(valueSelected.part_bId);
+  }
+
   // == Manage what to do when the user select a source application
   newSappliSelected(valueSelected: IApplication) {
     this.flowForm.get('source_application_id').setValue(valueSelected.appli_bId);
@@ -277,6 +294,32 @@ export class FlowcreateComponent implements OnInit {
           value: '',
           disabled: !this.selectedModel.istarget_prop_file_target_file_name,
         },
+      ],
+      _selectedsource_partner_id: [
+        {
+          value: '',
+          disabled: !this.selectedModel.issource_partner_id,
+        },
+        this.selectedModel.issource_partner_id ? Validators.required : null,
+      ],
+      source_partner_id: [
+        {
+          value: (flowInstance && flowInstance.source_partner_id) || '',
+          disabled: !this.selectedModel.issource_partner_id,
+        },
+      ],
+      source_protocol_transfer_mode: [
+        {
+          value: (flowInstance && flowInstance.source_protocol_transfer_mode) || 'ASCII',
+          disabled: !this.selectedModel.issource_protocol_transfer_mode,
+        },
+      ],
+      routing_base_directory: [
+        {
+          value: (flowInstance && flowInstance.routing_base_directory) || '',
+          disabled: !this.selectedModel.isrouting_base_directory,
+        },
+        this.selectedModel.isrouting_base_directory ? Validators.required : null,
       ],
     });
 

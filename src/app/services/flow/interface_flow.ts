@@ -19,6 +19,9 @@ export interface IFlow {
   source_prop_file_file_type?: string;
   target_prop_file_target_file_name?: string;
   target_prop_file_file_type?: string;
+  source_partner_id?: string;
+  source_protocol_transfer_mode?: string;
+  routing_base_directory?: string;
 }
 
 // == Interface for the list of flows
@@ -63,6 +66,9 @@ export interface IAPIFlowData {
           source_prop_file_file_type?: string;
           target_prop_file_target_file_name?: string;
           target_prop_file_file_type?: string;
+          source_partner_id?: string;
+          source_protocol_transfer_mode?: string;
+          routing_base_directory?: string;
         };
         model_id?: string;
       };
@@ -95,4 +101,7 @@ export interface IFlowModel {
   issource_prop_file_file_type?: boolean;
   istarget_prop_file_target_file_name?: boolean;
   istarget_prop_file_file_type?: boolean;
+  issource_partner_id?: boolean;
+  issource_protocol_transfer_mode?: boolean;
+  isrouting_base_directory?: boolean;
 }

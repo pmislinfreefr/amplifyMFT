@@ -18,18 +18,13 @@ import { IPartner, IPartnersList } from '../../services/partner/interface_partne
 import { PartnerService } from '../../services/partner/partner.service';
 import { UiService } from '../../common/uiservice';
 
-
 @Component({
   selector: 'app-partnerlist',
   templateUrl: './partnerlist.component.html',
   styleUrls: ['./partnerlist.component.scss'],
 })
 export class PartnerlistComponent implements OnInit, AfterViewInit {
-  displayedColumns = [
-    'part_name',
-    'part_comm',
-    'id',
-  ];
+  displayedColumns = ['part_name', 'part_comm', 'id'];
   dataSource = new MatTableDataSource(); // dataSource for the display of the table
   isLoadingData = false; // allow to display a spinner during the load of data (not managed in this component)
   hasError = false; // identify if there was an error during the load of data (HTTP REST Call)
@@ -50,45 +45,51 @@ export class PartnerlistComponent implements OnInit, AfterViewInit {
     public uiservice: UiService
   ) {}
 
-// == called from the html to apply the new filter when the filter value change
-applyFilter(filterValue: string) {
-  this.dataSource.filter = filterValue.trim().toLowerCase();
-}
-
-// == called from the html to display the selected item from the list
-//  This will hide the list and show the form
-displayPartner(part: IPartner) {
-  this.SelectedPartner = part;
-  this.canModifyForm = false;
-  this.formCssClass = 'form-view';
-  // Prepare the form
-  this.buildApplicationForm(part);
-  // activate the display
-  this.isListDisplayed = false;
-}
-
-// == called from the html, hide the detail view of the item and display the list
-closePartDisplay() {
-  this.isListDisplayed = true;
-}
-
-// == called from the html, move the form from view only to edit
-activateEdit() {
-  this.canModifyForm = true;
-  this.buildApplicationForm(this.SelectedPartner);
-  this.formCssClass = 'form-edit';
-}
-
-//Display in a string, the list of comm profiles
-listCommProf(part: IPartner): string {
-  let result="";
-  if (part.communicationProfiles) {
-    result=part.communicationProfiles.reduce((res: string, cur: any) => res + " " + cur.type + "/" + cur.protocol, "");
+  // == called from the html to apply the new filter when the filter value change
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  return result;
-}
 
-// load the data and subscibe to any data update
+  // == called from the html to display the selected item from the list
+  //  This will hide the list and show the form
+  displayPartner(part: IPartner) {
+    this.SelectedPartner = part;
+    this.canModifyForm = false;
+    this.formCssClass = 'form-view';
+    //==Feature not done yet (not required for the moment)
+    this.uiservice.showMsg(`Detail on partner is not activated`, 'Close', 'info');
+    //==To activate it, uncomment the line below, update buildPartnerForm method and update the HTML
+    // Prepare the form
+    //this.buildPartnerForm(part);
+    // activate the display
+    //this.isListDisplayed = false;
+  }
+
+  // == called from the html, hide the detail view of the item and display the list
+  closePartDisplay() {
+    this.isListDisplayed = true;
+  }
+
+  // == called from the html, move the form from view only to edit
+  activateEdit() {
+    this.canModifyForm = true;
+    this.buildPartnerForm(this.SelectedPartner);
+    this.formCssClass = 'form-edit';
+  }
+
+  //Display in a string, the list of comm profiles
+  listCommProf(part: IPartner): string {
+    let result = '';
+    if (part.communicationProfiles) {
+      result = part.communicationProfiles.reduce(
+        (res: string, cur: any) => res + ' ' + cur.type + '/' + cur.protocol,
+        ''
+      );
+    }
+    return result;
+  }
+
+  // load the data and subscibe to any data update
   ngOnInit() {
     this.partnerService.currentPartnersList.subscribe(
       data => (this.dataSource.data = data.partners)
@@ -102,7 +103,7 @@ listCommProf(part: IPartner): string {
   }
 
   // build the application form
-  private buildApplicationForm(part: IPartner) {
+  private buildPartnerForm(part: IPartner) {
     this.partForm = this.formBuilder.group({
       part_name: [
         {
@@ -124,7 +125,6 @@ listCommProf(part: IPartner): string {
           disabled: !this.canModifyForm,
         },
       ],
-      });
+    });
   }
-
 }

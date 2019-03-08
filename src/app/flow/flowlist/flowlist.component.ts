@@ -19,6 +19,8 @@ import { FlowService } from '../../services/flow/flow.service';
 import { UiService } from '../../common/uiservice';
 import { IApplication, IApplicationsList } from '../../services/interface_application';
 import { ApplicationService } from '../../services/application.service';
+import { PartnerService } from '../../services/partner/partner.service';
+import { IPartnersList, IPartner } from '../../services/partner/interface_partner';
 
 @Component({
   selector: 'app-flowlist',
@@ -28,6 +30,7 @@ import { ApplicationService } from '../../services/application.service';
 export class FlowlistComponent implements OnInit {
   displayedColumns = ['flow_name', 'flow_modelName', 'source', 'target', 'id'];
   myApplicationList: IApplicationsList; // Store the list of application
+  myPartnerList: IPartnersList;
   FILETYPE_LST = [
     { value: 'auto' },
     { value: 'Binary' },
@@ -35,6 +38,7 @@ export class FlowlistComponent implements OnInit {
     { value: 'STREAM_TEXT' },
   ];
   ACTIONAT_LST = [{ value: 'NONE' }, { value: 'ERASE' }, { value: 'DELETE' }];
+  FILEMODE_LST = [{ value: 'AUTODETECT' }, { value: 'BINARY' }, { value: 'ASCII' }];
   hideRequiredMarker = false;
   existingFlowModel: IFlowModel[] = this.flowService.getModelList();
   selectedModel: IFlowModel;
@@ -55,6 +59,7 @@ export class FlowlistComponent implements OnInit {
 
   constructor(
     private applicationService: ApplicationService,
+    private partnerService: PartnerService,
     private flowService: FlowService,
     private formBuilder: FormBuilder,
     public uiservice: UiService
@@ -63,6 +68,11 @@ export class FlowlistComponent implements OnInit {
   // == called from the html to apply the new filter when the filter value change
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  // == Manage what to do when the user select a source application
+  newSpartSelected(valueSelected: IPartner) {
+    this.flowForm.get('source_partner_id').setValue(valueSelected.part_bId);
   }
 
   // == Manage what to do when the user select a source application
@@ -81,7 +91,7 @@ export class FlowlistComponent implements OnInit {
   }
 
   // == called from the html, Transform businessID of application or partner to name
-  fromBid2Name(appliBid: string): string {
+  fromBid2Name(appliBid: string, partBid: string): string {
     let result = '';
     if (appliBid) {
       const appliObj = this.myApplicationList.applications.find(
@@ -89,6 +99,14 @@ export class FlowlistComponent implements OnInit {
       );
       if (appliObj) {
         result = appliObj.appli_name;
+      }
+    }
+    if (partBid) {
+      const partObj = this.myPartnerList.partners.find(
+        part => part.part_bId === partBid
+      );
+      if (partObj) {
+        result = partObj.part_name;
       }
     }
     return result;
@@ -179,6 +197,12 @@ export class FlowlistComponent implements OnInit {
       data => (this.myApplicationList = data)
     );
     this.applicationService.loadApplicationList();
+    // subscribe to partner provider to get the latest partner list &
+    // request load of the list from server if not yet in memory
+    this.partnerService.currentPartnersList.subscribe(
+      data => (this.myPartnerList = data)
+    );
+    this.partnerService.loadPartnerList();
 
     // Load the list of flow
     this.loadFlowList();
@@ -350,6 +374,32 @@ export class FlowlistComponent implements OnInit {
           value: flow.target_prop_file_target_file_name || '',
           disabled: !this.selectedModel.istarget_prop_file_target_file_name,
         },
+      ],
+      _selectedsource_partner_id: [
+        {
+          value: '',
+          disabled: !this.selectedModel.issource_partner_id,
+        },
+        this.selectedModel.issource_partner_id ? Validators.required : null,
+      ],
+      source_partner_id: [
+        {
+          value: (flow && flow.source_partner_id) || '',
+          disabled: !this.selectedModel.issource_partner_id,
+        },
+      ],
+      source_protocol_transfer_mode: [
+        {
+          value: (flow && flow.source_protocol_transfer_mode) || 'ASCII',
+          disabled: !this.selectedModel.issource_protocol_transfer_mode,
+        },
+      ],
+      routing_base_directory: [
+        {
+          value: (flow && flow.routing_base_directory) || '',
+          disabled: !this.selectedModel.isrouting_base_directory,
+        },
+        this.selectedModel.isrouting_base_directory ? Validators.required : null,
       ],
     });
   }

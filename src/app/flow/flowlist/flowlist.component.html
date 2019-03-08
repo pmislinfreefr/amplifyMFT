@@ -34,11 +34,11 @@
     </ng-container>
     <ng-container matColumnDef="source">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Source </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{fromBid2Name(row.source_application_id)}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{fromBid2Name(row.source_application_id, row.source_partner_id)}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="target">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Target </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{fromBid2Name(row.target_application_id)}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{fromBid2Name(row.target_application_id, '')}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef fxLayoutAlign="end center">View Details</mat-header-cell>
@@ -149,6 +149,19 @@
                     </mat-error>
                   </mat-form-field>
               </div>
+              <!-- Field 1bis -->
+              <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.issource_partner_id">
+                <mat-form-field class="f-f-large">
+                    <mat-select placeholder="Partner" formControlName="_selectedsource_partner_id" (selectionChange)="newSpartSelected($event.value)" required>
+                      <mat-option *ngFor="let spart of myPartnerList.partners" [value]="spart">
+                        {{spart.part_name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="flowForm.get('_selectedsource_partner_id').hasError('required')">
+                      Source partner is required
+                    </mat-error>
+                  </mat-form-field>
+              </div>
                 <!-- Field 2 -->
                 <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.issource_prop_file_file_type">
                     <mat-form-field class="f-f-large">
@@ -171,6 +184,26 @@
 
                   </mat-form-field>
               </div>
+              <!-- Field 4 -->
+              <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.issource_protocol_transfer_mode">
+                <mat-form-field class="f-f-large">
+                  <mat-select placeholder="File mode" formControlName="source_protocol_transfer_mode" >
+                    <mat-option *ngFor="let typesf of FILEMODE_LST" [value]="typesf.value">
+                      {{typesf.value}}
+                    </mat-option>
+                  </mat-select>
+
+                </mat-form-field>
+            </div>
+            <!-- Field 5 -->
+            <div fxFlex.gt-sm="33" fxFlex="100" class="p-0" *ngIf="selectedModel.isrouting_base_directory">
+              <mat-form-field class="f-f-large">
+                <input matInput placeholder="Receiving folder" aria-label="Receiving folder" formControlName="routing_base_directory" >
+                <mat-error *ngIf="flowForm.get('routing_base_directory').hasError('required')">
+                  Receiving folder is required
+                </mat-error> 
+               </mat-form-field>
+            </div>
           </div>
           <!-- Section 4 - Target info -->
           <h6>Target information</h6>

@@ -42,10 +42,10 @@ const LSTMODELS = [
     istarget_prop_file_file_type: true,
   },
   {
-    flow_modelName: '0001_MVSCFT2OPENCFT',
-    flow_modelNameToDisplay: 'Exchange from mainframe to distributed systems',
+    flow_modelName: '0002_SFTPPARTNER2OPENCFT',
+    flow_modelNameToDisplay: 'Exchange from an SFTP partner to CFT distributed systems',
     flow_modelDesc:
-      'Exchange between 2 applications based on CFT. Source run on mainframe, target run on distributed systems',
+      'Exchange from an SFTP partner to an applications based on CFT. Target run on distributed systems',
     isflow_name: true,
     isflow_description: true,
     iscontact_email: true,
@@ -53,15 +53,14 @@ const LSTMODELS = [
     iscontact_lastname: true,
     iscontact_jobtitle: true,
     iscontact_phone: true,
-    issource_application_id: true,
-    issource_application_product_id: true,
     istarget_application_id: true,
     istarget_application_product_id: true,
     isprotocol_pesit_flow_idf: true,
-    issource_prop_transfer_action_after_transfer: true,
-    issource_prop_file_file_type: true,
     istarget_prop_file_target_file_name: true,
     istarget_prop_file_file_type: true,
+    issource_partner_id: true,
+    issource_protocol_transfer_mode: true,
+    isrouting_base_directory: true,
   },
 ];
 
@@ -230,6 +229,21 @@ export class FlowService {
           (flow.model &&
             flow.model.model_data &&
             flow.model.model_data.target_prop_file_file_type) ||
+          '',
+          source_partner_id:
+          (flow.model &&
+            flow.model.model_data &&
+            flow.model.model_data.source_partner_id) ||
+          '',
+          source_protocol_transfer_mode:
+          (flow.model &&
+            flow.model.model_data &&
+            flow.model.model_data.source_protocol_transfer_mode) ||
+          '',
+          routing_base_directory:
+          (flow.model &&
+            flow.model.model_data &&
+            flow.model.model_data.routing_base_directory) ||
           '',
       });
     });
