@@ -230,17 +230,17 @@ export class FlowService {
             flow.model.model_data &&
             flow.model.model_data.target_prop_file_file_type) ||
           '',
-          source_partner_id:
+        source_partner_id:
           (flow.model &&
             flow.model.model_data &&
             flow.model.model_data.source_partner_id) ||
           '',
-          source_protocol_transfer_mode:
+        source_protocol_transfer_mode:
           (flow.model &&
             flow.model.model_data &&
             flow.model.model_data.source_protocol_transfer_mode) ||
           '',
-          routing_base_directory:
+        routing_base_directory:
           (flow.model &&
             flow.model.model_data &&
             flow.model.model_data.routing_base_directory) ||

@@ -102,9 +102,7 @@ export class FlowlistComponent implements OnInit {
       }
     }
     if (partBid) {
-      const partObj = this.myPartnerList.partners.find(
-        part => part.part_bId === partBid
-      );
+      const partObj = this.myPartnerList.partners.find(part => part.part_bId === partBid);
       if (partObj) {
         result = partObj.part_name;
       }
